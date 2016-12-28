@@ -1,7 +1,6 @@
 package com.zhengjt.floatingball;
 
 import android.content.Context;
-import android.support.annotation.DrawableRes;
 import android.util.DisplayMetrics;
 import android.view.MotionEvent;
 import android.view.View;
@@ -157,7 +156,7 @@ public class FloatBall implements View.OnTouchListener {
             return this;
         }
 
-        public Builder setRes(@DrawableRes int resId) {
+        public Builder setRes(int resId) {
             P.resId = resId;
             return this;
         }
@@ -174,7 +173,6 @@ public class FloatBall implements View.OnTouchListener {
         private Context context;
         private int rightMargin;
         private int bottomMargin;
-        @DrawableRes
         private int resId;
         private int width = 180;
         private int height = 180;
