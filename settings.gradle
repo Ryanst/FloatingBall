@@ -1,1 +1,1 @@
-include ':sample', ':floatball'
+include ':sample', ':library'

@@ -1,4 +1,4 @@
-package zhengjt.app.floatball;
+package com.zhengjt.floatingball;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
@@ -21,6 +21,6 @@ public class ExampleInstrumentedTest {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getTargetContext();
 
-        assertEquals("zhengjt.app.floatball.test", appContext.getPackageName());
+        assertEquals("com.zhengjt.floatingball.test", appContext.getPackageName());
     }
 }

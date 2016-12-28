@@ -8,7 +8,7 @@ import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.Toast;
 
-import zhengjt.app.floatball.FloatBall;
+import com.zhengjt.floatingball.FloatBall;
 
 public class MainActivity extends AppCompatActivity {
 

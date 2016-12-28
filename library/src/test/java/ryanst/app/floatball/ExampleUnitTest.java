@@ -1,4 +1,4 @@
-package zhengjt.app.floatball;
+package com.zhengjt.floatingball;
 
 import org.junit.Test;
 
