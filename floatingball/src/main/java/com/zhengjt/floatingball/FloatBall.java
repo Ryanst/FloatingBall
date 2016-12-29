@@ -1,10 +1,10 @@
 package com.zhengjt.floatingball;
 
 import android.content.Context;
+import android.support.v4.view.ViewCompat;
 import android.util.DisplayMetrics;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.Button;
 import android.widget.FrameLayout;
 
 /**
@@ -17,8 +17,7 @@ public class FloatBall implements View.OnTouchListener {
     private Params params;
 
     private Context context;
-
-    private Button ball;
+    private View ball;
     private View.OnClickListener onClickListener;
     private int maxMarginLeft;
     private int maxMarginTop;
@@ -35,7 +34,7 @@ public class FloatBall implements View.OnTouchListener {
         this.params = params;
     }
 
-    public Button getBall() {
+    public View getBall() {
         return ball;
     }
 
@@ -61,11 +60,19 @@ public class FloatBall implements View.OnTouchListener {
         layoutParams.bottomMargin = 0;
         layoutParams.rightMargin = 0;
 
-        ball = new Button(context);
-        ball.setBackgroundResource(params.resId);
+        if (params.ball == null) {
+            ball = new View(context);
+        } else {
+            ball = params.ball;
+        }
+
+        if (params.resId != 0) {
+            ball.setBackgroundResource(params.resId);
+        }
 
         ball.setLayoutParams(layoutParams);
         ball.setOnTouchListener(this);
+        ViewCompat.setElevation(ball, 64);
     }
 
     @Override
@@ -161,6 +168,11 @@ public class FloatBall implements View.OnTouchListener {
             return this;
         }
 
+        public Builder setBall(View view) {
+            P.ball = view;
+            return this;
+        }
+
         public FloatBall build() {
             FloatBall floatBall = new FloatBall(P.context);
             floatBall.setParams(P);
@@ -170,12 +182,15 @@ public class FloatBall implements View.OnTouchListener {
     }
 
     private static class Params {
+        public static final int DEFAULT_BALL_WIDTH = 180;
+        public static final int DEFAULT_BALL_HEIGHT = 180;
         private Context context;
         private int rightMargin;
         private int bottomMargin;
         private int resId;
-        private int width = 180;
-        private int height = 180;
+        private int width = DEFAULT_BALL_WIDTH;
+        private int height = DEFAULT_BALL_HEIGHT;
+        private View ball;
 
         public Params(Context context) {
             this.context = context;

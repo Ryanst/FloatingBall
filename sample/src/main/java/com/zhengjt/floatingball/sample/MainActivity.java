@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.zhengjt.floatingball.FloatBall;
@@ -40,6 +41,7 @@ public class MainActivity extends AppCompatActivity {
                 .setHeight(180)
                 .setWidth(180)
                 .setRes(com.zhengjt.floatingball.sample.R.drawable.qipao)
+                .setBall(new ImageView(this))
                 .build();
 
         floatBall.setOnClickListener(new View.OnClickListener() {
