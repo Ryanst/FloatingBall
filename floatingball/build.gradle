@@ -36,7 +36,7 @@ dependencies {
 
 def siteUrl = 'https://github.com/Ryanst/FloatingBall'      // Homepage URL of the library
 def gitUrl = 'https://github.com/Ryanst/FloatingBall.git'   // Git repository URL
-group = "com.github.Ryanst"                                          // Maven Group ID for the artifact
+group = "com.zhengjuntong"                                      // Maven Group ID for the artifact
 
 install {
     repositories.mavenInstaller {
@@ -46,7 +46,7 @@ install {
                 packaging 'aar'
 
                 // Add your description here
-                name 'com.zhengjt:floatingball'
+                name 'com.zhengjuntong:floatingball'
                 description = 'Android float ball'
                 url siteUrl
 
@@ -104,6 +104,7 @@ bintray {
 
     configurations = ['archives']
     pkg {
+        userOrg = properties.getProperty("bintray.organization")
         repo = "android"
         // it is the name that appears in bintray when logged
         name = "floatingball"
