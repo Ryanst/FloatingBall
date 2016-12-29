@@ -27,12 +27,10 @@ public class FloatBall implements View.OnTouchListener {
     private int xDelta;
     private int yDelta;
 
-    private FloatBall(Context context) {
-        this.context = context;
-    }
-
-    public void setParams(Params params) {
+    public FloatBall(Params params) {
         this.params = params;
+        this.context = params.context;
+        init();
     }
 
     public View getBall() {
@@ -181,9 +179,7 @@ public class FloatBall implements View.OnTouchListener {
         }
 
         public FloatBall build() {
-            FloatBall floatBall = new FloatBall(P.context);
-            floatBall.setParams(P);
-            floatBall.init();
+            FloatBall floatBall = new FloatBall(P);
             return floatBall;
         }
     }
