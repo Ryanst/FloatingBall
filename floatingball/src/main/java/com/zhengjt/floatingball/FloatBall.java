@@ -13,7 +13,8 @@ import android.widget.FrameLayout;
 
 public class FloatBall implements View.OnTouchListener {
 
-    public static final int TOP_STATUS_BAR_HEIGHT = 25;
+    private static final int TOP_STATUS_BAR_HEIGHT = 25;
+    private static final int MAX_ELEVATION = 64;
     private Params params;
 
     private Context context;
@@ -38,11 +39,27 @@ public class FloatBall implements View.OnTouchListener {
         return ball;
     }
 
+    public void setVisibility(int visibility) {
+        if (ball != null) {
+            ball.setVisibility(visibility);
+        }
+    }
+
     public void setOnClickListener(View.OnClickListener listener) {
         this.onClickListener = listener;
     }
 
     private void init() {
+
+        if (params.ball == null) {
+            ball = new View(context);
+        } else {
+            ball = params.ball;
+        }
+
+        if (params.resId != 0) {
+            ball.setBackgroundResource(params.resId);
+        }
 
         FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(
                 params.width, params.height);
@@ -60,19 +77,9 @@ public class FloatBall implements View.OnTouchListener {
         layoutParams.bottomMargin = 0;
         layoutParams.rightMargin = 0;
 
-        if (params.ball == null) {
-            ball = new View(context);
-        } else {
-            ball = params.ball;
-        }
-
-        if (params.resId != 0) {
-            ball.setBackgroundResource(params.resId);
-        }
-
         ball.setLayoutParams(layoutParams);
         ball.setOnTouchListener(this);
-        ViewCompat.setElevation(ball, 64);
+        ViewCompat.setElevation(ball, MAX_ELEVATION);
     }
 
     @Override
