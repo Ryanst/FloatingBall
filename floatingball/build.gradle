@@ -40,17 +40,14 @@ group = "com.zhengjuntong"                                      // Maven Group I
 
 install {
     repositories.mavenInstaller {
-        // This generates POM.xml with proper parameters
+
         pom {
             project {
                 packaging 'aar'
-
-                // Add your description here
                 name 'com.zhengjuntong:floatingball'
                 description = 'Android float ball'
                 url siteUrl
 
-                // Set your license
                 licenses {
                     license {
                         name 'The Apache Software License, Version 2.0'
@@ -97,7 +94,7 @@ artifacts {
 Properties properties = new Properties()
 properties.load(project.rootProject.file('local.properties').newDataInputStream())
 
-// https://github.com/bintray/gradle-bintray-plugin
+
 bintray {
     user = properties.getProperty("bintray.user")
     key = properties.getProperty("bintray.apikey")
@@ -112,16 +109,10 @@ bintray {
         vcsUrl = gitUrl
         licenses = ["Apache-2.0"]
         publish = true
-        version {
-//            gpg {
-//                sign = true //Determines whether to GPG sign the files. The default is false
-//                passphrase = properties.getProperty("bintray.gpg.password")
-            //Optional. The passphrase for GPG signing'
-//            }
-        }
     }
 
-    javadoc { //jav doc采用utf-8编码否则会报“GBK的不可映射字符”错误
+    //java doc采用utf-8编码否则会报“GBK的不可映射字符”错误
+    javadoc {
         options {
             encoding "UTF-8"
             charSet 'UTF-8'
