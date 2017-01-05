@@ -40,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
                 .setRightMargin(90)
                 .setHeight(180)
                 .setWidth(180)
-                .setRes(com.zhengjt.floatingball.sample.R.drawable.qipao)
+                .setRes(R.drawable.ic_ball)
                 .setDuration(500)
                 .setBall(new ImageView(this))
                 .build();
