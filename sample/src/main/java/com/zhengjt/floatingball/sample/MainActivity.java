@@ -13,14 +13,14 @@ import com.zhengjt.floatingball.FloatBall;
 
 public class MainActivity extends AppCompatActivity {
 
-    private FrameLayout flContent;
+    private FrameLayout rootView;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        flContent = (FrameLayout) findViewById(R.id.fl_content);
+        rootView = (FrameLayout) findViewById(R.id.fl_content);
 
         initBall();
 
@@ -35,7 +35,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initBall() {
-        FloatBall floatBall = new FloatBall.Builder(this)
+        FloatBall floatBall = new FloatBall.Builder(this, rootView)
                 .setBottomMargin(90)
                 .setRightMargin(90)
                 .setHeight(180)
@@ -43,15 +43,12 @@ public class MainActivity extends AppCompatActivity {
                 .setRes(R.drawable.ic_ball)
                 .setDuration(500)
                 .setBall(new ImageView(this))
+                .setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Toast.makeText(MainActivity.this, "floating ball click", Toast.LENGTH_SHORT).show();
+                    }
+                })
                 .build();
-
-        floatBall.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(MainActivity.this, "floating ball click", Toast.LENGTH_SHORT).show();
-            }
-        });
-
-        flContent.addView(floatBall.getBall());
     }
 }

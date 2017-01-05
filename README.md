@@ -6,32 +6,28 @@
 
 ##使用方法
 
-	FloatBall floatBall = new FloatBall.Builder(this)
+    //rootView是必须的，其他的设置选项都有默认值
+	FloatBall floatBall = new FloatBall.Builder(this, rootView)
 	                .setBottomMargin(90)//悬浮球初始位置BottomMargin
 	                .setRightMargin(90)//悬浮球初始位置RightMargin
 	                .setHeight(180)//悬浮球高度
 	                .setWidth(180)//悬浮球宽度
 	                .setRes(R.drawable.ic_ball)//图片资源
 	                .setDuration(500)//靠边动画时间
+	                .setOnClickListener(new View.OnClickListener() {//悬浮球点击事件
+                                        @Override
+                                        public void onClick(View v) {
+                                            Toast.makeText(MainActivity.this, "floating ball click", Toast.LENGTH_SHORT).show();
+                                        }
+                                    })
 	                .setBall(new ImageView(this))//默认悬浮球是View，如需设置特定View则设置此项，反则无需设置
 	                .build();
-
-	//悬浮球点击事件
-	floatBall.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(MainActivity.this, "floating ball click", Toast.LENGTH_SHORT).show();
-            }
-        });
-
-	//添加到你的父容器中
-	flContent.addView(floatBall.getBall());
 	
 
 ##导入方式
 
 	dependencies {
-	    compile 'com.zhengjt:floatingball:1.0.1'
+	    compile 'com.zhengjt:floatingball:1.0.2'
 	}
 
 ##License

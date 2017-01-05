@@ -5,9 +5,11 @@ import android.support.v4.view.ViewCompat;
 import android.util.DisplayMetrics;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.Transformation;
 import android.widget.FrameLayout;
+import android.widget.RelativeLayout;
 
 /**
  * Created by zhengjuntong on 12/28/16.
@@ -21,7 +23,6 @@ public class FloatBall implements View.OnTouchListener {
 
     private Context context;
     private View ball;
-    private View.OnClickListener onClickListener;
     private int maxMarginLeft;
     private int maxMarginTop;
     private int downX;
@@ -46,24 +47,32 @@ public class FloatBall implements View.OnTouchListener {
         }
     }
 
-    public void setOnClickListener(View.OnClickListener listener) {
-        this.onClickListener = listener;
-    }
-
     private void init() {
-
         if (params.ball == null) {
             ball = new View(context);
         } else {
             ball = params.ball;
         }
 
+        params.rootView.addView(ball);
+
         if (params.resId != 0) {
             ball.setBackgroundResource(params.resId);
         }
 
-        FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(
-                params.width, params.height);
+        ball.setOnTouchListener(this);
+        ViewCompat.setElevation(ball, MAX_ELEVATION);
+
+        ViewGroup.MarginLayoutParams layoutParams;
+
+        if (params.rootView instanceof FrameLayout) {
+            layoutParams = new FrameLayout.LayoutParams(params.width, params.height);
+        } else if (params.rootView instanceof RelativeLayout) {
+            layoutParams = new RelativeLayout.LayoutParams(params.width, params.height);
+        } else {
+            layoutParams = new ViewGroup.MarginLayoutParams(
+                    params.width, params.height);
+        }
 
         dm = context.getResources().getDisplayMetrics();
         int screenWidth = dm.widthPixels;
@@ -79,8 +88,6 @@ public class FloatBall implements View.OnTouchListener {
         layoutParams.rightMargin = 0;
 
         ball.setLayoutParams(layoutParams);
-        ball.setOnTouchListener(this);
-        ViewCompat.setElevation(ball, MAX_ELEVATION);
     }
 
     @Override
@@ -91,21 +98,21 @@ public class FloatBall implements View.OnTouchListener {
             case MotionEvent.ACTION_DOWN:
                 downX = touchX;
                 downY = touchY;
-                FrameLayout.LayoutParams lParams = (FrameLayout.LayoutParams) ball
+                ViewGroup.MarginLayoutParams lParams = (ViewGroup.MarginLayoutParams) ball
                         .getLayoutParams();
                 xDelta = touchX - lParams.leftMargin;
                 yDelta = touchY - lParams.topMargin;
                 break;
             case MotionEvent.ACTION_UP:
                 if (downX == touchX && downY == touchY) {
-                    if (onClickListener != null) {
-                        onClickListener.onClick(ball);
+                    if (params.onClickListener != null) {
+                        params.onClickListener.onClick(ball);
                     }
                 } else {
                     Animation animation = new Animation() {
                         @Override
                         protected void applyTransformation(float interpolatedTime, Transformation t) {
-                            FrameLayout.LayoutParams layoutParams = (FrameLayout.LayoutParams) ball
+                            ViewGroup.MarginLayoutParams layoutParams = (ViewGroup.MarginLayoutParams) ball
                                     .getLayoutParams();
 
                             int curLeftMargin = layoutParams.leftMargin;
@@ -129,8 +136,15 @@ public class FloatBall implements View.OnTouchListener {
             case MotionEvent.ACTION_POINTER_UP:
                 break;
             case MotionEvent.ACTION_MOVE:
-                FrameLayout.LayoutParams layoutParams = (FrameLayout.LayoutParams) ball
-                        .getLayoutParams();
+                ViewGroup.MarginLayoutParams layoutParams;
+
+                if (params.rootView instanceof FrameLayout) {
+                    layoutParams = (FrameLayout.LayoutParams) ball.getLayoutParams();
+                } else if (params.rootView instanceof RelativeLayout) {
+                    layoutParams = (RelativeLayout.LayoutParams) ball.getLayoutParams();
+                } else {
+                    layoutParams = (ViewGroup.MarginLayoutParams) ball.getLayoutParams();
+                }
 
                 int leftMargin;
 
@@ -169,8 +183,9 @@ public class FloatBall implements View.OnTouchListener {
     public static class Builder {
         private Params P;
 
-        public Builder(Context context) {
+        public Builder(Context context, ViewGroup rootView) {
             P = new Params(context);
+            P.rootView = rootView;
         }
 
         public Builder setRightMargin(int rightMargin) {
@@ -208,6 +223,11 @@ public class FloatBall implements View.OnTouchListener {
             return this;
         }
 
+        public Builder setOnClickListener(View.OnClickListener onClickListener) {
+            P.onClickListener = onClickListener;
+            return this;
+        }
+
         public FloatBall build() {
             FloatBall floatBall = new FloatBall(P);
             return floatBall;
@@ -225,6 +245,8 @@ public class FloatBall implements View.OnTouchListener {
         private int resId;
         private int width = DEFAULT_BALL_WIDTH;
         private int height = DEFAULT_BALL_HEIGHT;
+        private ViewGroup rootView;
+        private View.OnClickListener onClickListener;
         private View ball;
 
         public Params(Context context) {
