@@ -1,10 +1,13 @@
 package com.zhengjt.floatingball;
 
+import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.support.v4.view.ViewCompat;
 import android.util.DisplayMetrics;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.Transformation;
 import android.widget.FrameLayout;
 
 /**
@@ -26,6 +29,7 @@ public class FloatBall implements View.OnTouchListener {
     private int downY;
     private int xDelta;
     private int yDelta;
+    private DisplayMetrics dm;
 
     public FloatBall(Params params) {
         this.params = params;
@@ -62,7 +66,7 @@ public class FloatBall implements View.OnTouchListener {
         FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(
                 params.width, params.height);
 
-        DisplayMetrics dm = context.getResources().getDisplayMetrics();
+        dm = context.getResources().getDisplayMetrics();
         int screenWidth = dm.widthPixels;
         int screenHeight = dm.heightPixels;
 
@@ -98,7 +102,28 @@ public class FloatBall implements View.OnTouchListener {
                     if (onClickListener != null) {
                         onClickListener.onClick(ball);
                     }
+                } else {
+                    Animation animation = new Animation() {
+                        @Override
+                        protected void applyTransformation(float interpolatedTime, Transformation t) {
+                            FrameLayout.LayoutParams layoutParams = (FrameLayout.LayoutParams) ball
+                                    .getLayoutParams();
+
+                            int curLeftMargin = layoutParams.leftMargin;
+
+                            if (touchX < dm.widthPixels / 2) {
+                                layoutParams.leftMargin = (int) (curLeftMargin - curLeftMargin * interpolatedTime);
+                            } else {
+                                layoutParams.leftMargin = (int) (curLeftMargin + (maxMarginLeft - curLeftMargin) * interpolatedTime);
+                            }
+
+                            ball.setLayoutParams(layoutParams);
+                        }
+                    };
+                    animation.setDuration(params.duration);
+                    ball.startAnimation(animation);
                 }
+
                 break;
             case MotionEvent.ACTION_POINTER_DOWN:
                 break;
@@ -138,6 +163,7 @@ public class FloatBall implements View.OnTouchListener {
         }
 
         ball.getRootView().invalidate();
+
         return true;
     }
 
@@ -178,6 +204,11 @@ public class FloatBall implements View.OnTouchListener {
             return this;
         }
 
+        public Builder setDuration(int duration) {
+            P.duration = duration;
+            return this;
+        }
+
         public FloatBall build() {
             FloatBall floatBall = new FloatBall(P);
             return floatBall;
@@ -187,6 +218,8 @@ public class FloatBall implements View.OnTouchListener {
     private static class Params {
         public static final int DEFAULT_BALL_WIDTH = 180;
         public static final int DEFAULT_BALL_HEIGHT = 180;
+        public static final int DEFAULT_DURATION = 500;
+        private int duration = DEFAULT_DURATION;
         private Context context;
         private int rightMargin;
         private int bottomMargin;

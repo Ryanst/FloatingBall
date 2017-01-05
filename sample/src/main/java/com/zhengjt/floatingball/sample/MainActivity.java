@@ -41,6 +41,7 @@ public class MainActivity extends AppCompatActivity {
                 .setHeight(180)
                 .setWidth(180)
                 .setRes(com.zhengjt.floatingball.sample.R.drawable.qipao)
+                .setDuration(500)
                 .setBall(new ImageView(this))
                 .build();
 
