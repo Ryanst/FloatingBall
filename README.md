@@ -4,7 +4,7 @@
 ![floatingball](gifs/floatingball.gif)
 
 
-##使用方法
+## 使用方法
 
     //rootView是必须的，其他的设置选项都有默认值
 	FloatBall floatBall = new FloatBall.Builder(this, rootView)
@@ -24,13 +24,13 @@
 	                .build();
 	
 
-##导入方式
+## 导入方式
 
 	dependencies {
 	    compile 'com.zhengjt:floatingball:1.0.2'
 	}
 
-##License
+## License
 
 	Copyright 2016 zhengjt
 
