@@ -1,5 +1,5 @@
 # FloatingBall
-##效果图
+## 效果图
 
 ![floatingball](gifs/floatingball.gif)
 
